@@ -25,7 +25,7 @@ def generate_launch_description():
         # 启动 slam_toolbox 在线建图
         Node(
             package='slam_toolbox',
-            executable='online_async_launch.py',
+            executable='async_slam_toolbox_node',
             name='slam_toolbox',
             output='screen',
             parameters=[LaunchConfiguration('slam_params_file')],

@@ -140,13 +140,13 @@ class MockSensors(Node):
         scan.header.frame_id = 'base_link'
         scan.angle_min = -self.laser_fov / 2.0
         scan.angle_max = self.laser_fov / 2.0
-        scan.angle_increment = self.laser_fov / self.laser_count
+        scan.angle_increment = (scan.angle_max - scan.angle_min) / self.laser_count
         scan.range_min = 0.1
         scan.range_max = self.laser_range
         scan.time_increment = 0.0
         # 模拟一个简单场景：前方有障碍物
         ranges = []
-        for i in range(self.laser_count):
+        for i in range(self.laser_count + 1):
             angle = scan.angle_min + i * scan.angle_increment
             # 模拟前方 2m 处有一面墙
             base_range = 2.0

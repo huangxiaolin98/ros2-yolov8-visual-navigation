@@ -16,7 +16,7 @@ def generate_launch_description():
                               description='地图文件路径'),
         DeclareLaunchArgument('params_file', default_value=nav2_params,
                               description='Nav2 参数文件路径'),
-        DeclareLaunchArgument('use_sim_time', default_value='true',
+        DeclareLaunchArgument('use_sim_time', default_value='false',
                               description='是否使用仿真时间'),
 
         # 地图服务器
@@ -58,6 +58,15 @@ def generate_launch_description():
             parameters=[LaunchConfiguration('params_file')]
         ),
 
+        # 行为恢复服务器（Spin, BackUp, Wait 等动作）
+        Node(
+            package='nav2_behaviors',
+            executable='behavior_server',
+            name='behavior_server',
+            output='screen',
+            parameters=[LaunchConfiguration('params_file')]
+        ),
+
         # 行为树导航器（提供 navigate_to_pose Action）
         Node(
             package='nav2_bt_navigator',
@@ -77,7 +86,8 @@ def generate_launch_description():
                 'use_sim_time': LaunchConfiguration('use_sim_time'),
                 'autostart': True,
                 'node_names': ['map_server', 'amcl', 'planner_server',
-                               'controller_server', 'bt_navigator'],
+                               'controller_server', 'behavior_server',
+                               'bt_navigator'],
             }]
         ),
     ])
