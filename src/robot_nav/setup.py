@@ -6,7 +6,7 @@ package_name = 'robot_nav'
 
 setup(
     name=package_name,
-    version='0.0.1',
+    version='0.1.0',
     packages=find_packages(exclude=['test']),
     data_files=[
         ('share/ament_index/resource_index/packages',
@@ -16,13 +16,15 @@ setup(
         (os.path.join('share', package_name, 'config'), glob(os.path.join('config', '*'))),
         (os.path.join('share', package_name, 'worlds'), glob(os.path.join('worlds', '*'))),
         (os.path.join('share', package_name, 'maps'), glob(os.path.join('maps', '*'))),
+        (os.path.join('share', package_name, 'urdf'), glob(os.path.join('urdf', '*'))),
+        (os.path.join('share', package_name, 'rviz'), glob(os.path.join('rviz', '*'))),
         (os.path.join('share', package_name, 'models'), glob(os.path.join('models', '*'))),
     ],
     install_requires=['setuptools'],
     zip_safe=True,
     maintainer='huangxiaogua',
     maintainer_email='huangxiaogua@example.com',
-    description='基于ROS2与YOLOv8的移动机器人视觉引导自主导航系统',
+    description='基于ROS2与YOLOv8的移动机器人视觉引导自主导航系统（Gazebo 版）',
     license='MIT',
     tests_require=['pytest'],
     entry_points={
@@ -31,6 +33,7 @@ setup(
             'yolo_detector = robot_nav.yolo_detector:main',
             'coord_transformer = robot_nav.coord_transformer:main',
             'nav_controller = robot_nav.nav_controller:main',
+            'mock_sensors = robot_nav.mock_sensors:main',
         ],
     },
 )

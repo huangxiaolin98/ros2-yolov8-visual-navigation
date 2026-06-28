@@ -1,0 +1,45 @@
+# ============================================================
+# ROS2 视觉导航 Docker 开发环境
+# ============================================================
+# 首次构建:  docker compose build
+# 启动容器:  docker compose up -d
+# 进入容器:  docker exec -it ros2_visual_nav bash
+# 停止容器:  docker compose down
+# ============================================================
+
+services:
+  ros2_visual_nav:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    platform: linux/arm64
+    container_name: ros2_visual_nav
+    hostname: ros2_visual_nav
+    image: ros2_visual_nav:latest
+
+    # 保持容器运行（方便随时 exec 进入）
+    stdin_open: true
+    tty: true
+
+    # X11 显示支持（让 Gazebo/RViz GUI 显示到 Mac）
+    environment:
+      - DISPLAY=host.docker.internal:0
+      - QT_X11_NO_MITSHM=1
+      - LIBGL_ALWAYS_SOFTWARE=1
+      - LIBGL_ALWAYS_INDIRECT=1
+      - QT_QPA_PLATFORM=xcb
+      - XDG_RUNTIME_DIR=/tmp/runtime-root
+    volumes:
+      # X11 socket（Linux 宿主机）
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw
+      # 项目源码挂载（修改代码后无需重新构建镜像）
+      - ./src:/root/ros2_ws/src:rw
+
+    # 网络：允许容器与宿主机通信
+    network_mode: host
+
+    # 资源限制（可按需调整）
+    deploy:
+      resources:
+        limits:
+          memory: 8G
